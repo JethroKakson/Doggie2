@@ -1,0 +1,51 @@
+for the cart we need to have a new app in our project.
+we shall have four urls for this app. cart page, add, update, delete
+SESSIONS are the ways of how we can keep trackof the users information even if they logout and come back after a week.
+    we do this by creating a cart.py file where we write the code for the Cart to be able to access the session key for each user
+    and so that the user who has no key one is created for them.
+    After the class creation, we have to create context_processor.py to handle our sessions.
+    After the creation of the context processor, we need to make django know that the context processor exists.
+    for this we go to the settings.py file and go to the templates list and add the cart.context_processors.cart under context processors
+    After we do this thats all then django will be able to take track of the sessions for each user.
+    to check the sessions, we go to our terminal and access the shell then import Session from django.contrib.session.models
+    copy session key from the browser and get it with Session.objects.get(pk='the_key') then decode it with get_decoded()
+
+Adding items to the cart
+    here we shall habve to first add jQuery to our base.html.
+    go to the product page and have the button for adding to cart have a desired class and the value to the id of the product
+    then id of any name which will help us while using JQuery to help the button do the desired action.
+    Then after the creation of the button, we need to create script tags that will check whether the button has been clicked.
+    Ajax is used in this because it helps something to be loaded in the backend of a website without having to refresh the website
+    in our views we need to be able to access the items in the cart so we shall have to import Cart class. this will give us the access to all the items in the cart
+    and also we have to import our products model. we also have to send a json response through JsonResponse from django.http, and also import get_object_or_404 from django.shortcuts
+    also we have tocreate the add function in our cart.py file
+
+updating the cart button
+    we shall need to find the palce where the cart number is so that we can update it. here we add the id eg 'cart_quantity' so that we can use the jquery
+    after that we need to go to the cart file we created and add the __len__ function so that we can find the length of the cart dict.
+    After edit the views in the cart. edit the json, use the length filter because we used __len__ function so django knows everything so it will handle them well
+
+reflecting the items in the cart on the cart page.
+    we shall have to write a new function in the cart.py file that will give us the control over the the items in the cart so that we can get them on to our page.
+    so in the new function we create get the cart keys eg prod_id = self.cart.keys() because all these items are being added into a dictionary
+    after that we have to check if the products are really in the Products model. if there, they are returned.
+    we then go to the views.py and edit the cart_summary view. first we get the cart and then products
+
+for the product quantity
+    we get the select tag and fill it with the maximum items a buyer can get and be able to make the sure you give it an id so that it links up with the jquery in the code
+    give it an id that you will be able to reference in the jquery part and make sure hthe id reference is the same in the jquery.
+    so with this the jquery will be sending all the info to the url so we have to go the url and make sure the quantity reflects in the cart add function.
+    after the id is where youcan reference the quantity that you need to be reflected on the cart.
+    make sure the value you have added for quantity reflects on the views and also on the cart.py add function because it is the fucntion that caters for the things added to the cart.
+
+when we add this select to our cart summary page the select shows that we have to select the quantity all over again.
+    to fix this we shall go to the views and edit the cart_summary view
+    so we shall troduce a quantities variable and give it a value of cart.get_quants which we shall be creating in a minute.
+    so make sure that this quantities show in the context of the cart summary
+    after the modification we shall have to make the changes reflect in the select.
+
+as we update our cart we need to distinguish al the items from each otherthat is why since the same button appears on all the the cards we need to give them a data-index which will be the product.id
+
+now changing the profile content:\
+we need to go and get the UserUpdateForm from the django forms and be able to get the form to be inherited from by the form that we have to create.
+but this form cannot allow us to be able to change the password so the password should be changed with another form.

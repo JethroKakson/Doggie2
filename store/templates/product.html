@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Doggie - About Page
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br>
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                  <br><br>
+                  <p class="card-text"><strong>About the product</strong></p>
+                <p class="card-text">{{product.description}}</p>
+                  <br><br><br>
+                {% if product.is_sale %}
+                        <div class="badge bg-dark text-white position-absolute" style="font-size: 1.5rem; top: 0.5rem; right: 0.5rem">Sale</div>
+                      <!-- Product price-->
+                      <strike>
+                          ${{product.price}}
+                      </strike>
+                      &nbsp;
+                      ${{product.sale_price}}
+                  {% else %}
+                    ${{product.price}}
+                  {% endif %}
+                  <br><br>
+                  <div class="row justify-content-center">
+                      <div class="col-md-2">Quantity:</div>
+                      <div class="col-md-2">
+                            <select class="form-select form-select-sm" id="quantity">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                                <option value="4">4</option>
+                              <option value="5">5</option>
+                            </select>
+                      </div>
+                  </div>
+                  <br><br>
+                  <button type="button" value="{{product.id}}" id="add-cart" class="btn btn-success">Add to cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <script>
+    // check if button pressed
+        $(document).on('click', '#add-cart', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'cart_add' %}',
+                data: {
+                    product_id: $('#add-cart').val(),
+                    product_qty: $('#quantity option:selected').text(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function(json){
+                    console.log(json)
+                    document.getElementById('cart_quantity').textContext = json.qty
+                    location.reload();
+                },
+                error: function(xhr, errmsg, err){
+
+                }
+            });
+        });
+    </script>
+{% endblock %}
