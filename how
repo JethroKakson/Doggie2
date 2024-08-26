@@ -49,3 +49,14 @@ as we update our cart we need to distinguish al the items from each otherthat is
 now changing the profile content:\
 we need to go and get the UserUpdateForm from the django forms and be able to get the form to be inherited from by the form that we have to create.
 but this form cannot allow us to be able to change the password so the password should be changed with another form.
+
+cart persistence.
+now we need to keep the persistence of our cart until we login again
+so to do this we need to turn the cart dictionary into a string so that it is easily saved in the database 
+    so we need to put it part of the profile so that we can be able to save it for the next login time.
+    so to do this we shall need to make the old_cart field in the database also have the information that is in  our cart for us to achieve our goal.
+    get the cart to old_cart, retrieve the cart back usong the old_cart
+    to do the line above we shall use json to convert the string into a dictionary
+
+
+we are going to be able to create the shipping model but this will need us to make a new model to handle it 

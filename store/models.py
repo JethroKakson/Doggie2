@@ -17,6 +17,9 @@ class Profile(models.Model):
     state = models.CharField(max_length=15, blank=True)
     zipcode = models.CharField(max_length=15, blank=True)
     country = models.CharField(max_length=15, blank=True)
+    # this line below is to turn the cart dictionary into a string so that we are able to store it in the database
+    old_cart = models.CharField(max_length=200, blank=True, null=True)
+
 
     def __str__(self):
         return self.user.username
