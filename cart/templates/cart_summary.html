@@ -66,7 +66,11 @@ Doggie - Home Page
           </div>
         </div><br>
             {% endfor %}
-            <h3>Total: ${{totals}}</h3>
+            <div class="align" style="float: right;">
+
+                <h3>Total: ${{totals}}</h3>
+                <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+            </div>
             <br><br>
             {% else %}
                 <div class="container">

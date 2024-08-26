@@ -32,16 +32,16 @@ def search(request):
 def update_info(request):
     if request.user.is_authenticated:
         current_user = User.objects.get(id=request.user.id)
-        try:
-            shipping_user = ShippingAddress.objects.get(id=request.user.id)
-        except ShippingAddress.DoesNotExist:
-            shipping_user = None
+        # try:
+        shipping_user = ShippingAddress.objects.get(user__id=current_user.id)
+        # except ShippingAddress.DoesNotExist:
+            # shipping_user = None
         # current_user = Profile.objects.get(user__id=request.user.id)
         form = UserInfoForm(request.POST or None, instance=current_user)
-        try:
-            shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
-        except ShippingAddress.DoesNotExist:
-            shipping_user = None
+        # try:
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+        # except ShippingAddress.DoesNotExist:
+            # shipping_user = None
 
         if form.is_valid() or shipping_form.is_valid():
             form.save()
