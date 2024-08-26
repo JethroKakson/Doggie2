@@ -9,6 +9,9 @@ from .forms import SignUpForm, UpdateUserForm, PasswordForm, UserInfoForm
 from django.db.models import Q
 import json
 from cart.cart import Cart
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def search(request):
@@ -28,15 +31,25 @@ def search(request):
 
 def update_info(request):
     if request.user.is_authenticated:
-        current_user = Profile.objects.get(user__id=request.user.id)
+        current_user = User.objects.get(id=request.user.id)
+        try:
+            shipping_user = ShippingAddress.objects.get(id=request.user.id)
+        except ShippingAddress.DoesNotExist:
+            shipping_user = None
+        # current_user = Profile.objects.get(user__id=request.user.id)
         form = UserInfoForm(request.POST or None, instance=current_user)
+        try:
+            shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+        except ShippingAddress.DoesNotExist:
+            shipping_user = None
 
-        if form.is_valid():
+        if form.is_valid() or shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             # login(request, current_user)
             messages.success(request, "User Info has been updated!!")
             return redirect('home')
-        return render(request, 'update_info.html', {'form': form})
+        return render(request, 'update_info.html', {'form': form, 'shipping_form': shipping_form})
     else:
         messages.success(request, "You must be logged in!")
         return redirect('home')
